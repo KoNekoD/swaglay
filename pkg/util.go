@@ -1,4 +1,4 @@
-package pkg
+package swaglay
 
 func MustEmptyOrOneLength[List any](list []List) {
 	count := len(list)
