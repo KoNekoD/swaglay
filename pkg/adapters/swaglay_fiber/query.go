@@ -33,6 +33,10 @@ func satisfyQuery[DtoType any](ctx fiber.Ctx) *DtoType {
 		return nil
 	}
 
+	if dto != nil {
+		setCtxIfNeeded(dto, ctx)
+	}
+
 	if err = FiberApp.Config().StructValidator.Validate(&dto); err != nil {
 		err = ctx.Status(http.StatusUnprocessableEntity).JSON(NewResponseErrorBody(ctx, err))
 		if err != nil {

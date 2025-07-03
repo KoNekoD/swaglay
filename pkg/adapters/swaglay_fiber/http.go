@@ -18,7 +18,6 @@ func wrapBodyInputMiddleware[In any](opts []Opts) []Opts {
 	uses[0] = func(ctx fiber.Ctx) error {
 		var input In
 		setCtxIfNeeded(&input, ctx)
-
 		if err := ctx.Bind().JSON(&input); err != nil {
 			return ctx.Status(http.StatusUnprocessableEntity).JSON(NewResponseErrorBody(ctx, err))
 		}
@@ -39,10 +38,6 @@ func wrapSatisfyQueryInputMiddleware[In any](opts []Opts) []Opts {
 
 	uses[0] = func(ctx fiber.Ctx) error {
 		input := satisfyQuery[In](ctx)
-
-		if input != nil {
-			setCtxIfNeeded(input, ctx)
-		}
 
 		ctx.Locals("input", input)
 
@@ -127,8 +122,6 @@ func GetI[In any](apiResource, url string, fn HandleFnI[In], name string, opts .
 	} else {
 		action = func(ctx fiber.Ctx) error {
 			if input := satisfyQuery[In](ctx); input != nil {
-				setCtxIfNeeded(input, ctx)
-
 				handleI(input, ctx, fn)
 			}
 
@@ -181,7 +174,6 @@ func GetIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], nam
 	} else {
 		action = func(ctx fiber.Ctx) error {
 			if input := satisfyQuery[In](ctx); input != nil {
-				setCtxIfNeeded(input, ctx)
 				handleIO(input, ctx, fn)
 			}
 			return nil
@@ -233,9 +225,7 @@ func PostI[In any](apiResource, url string, fn HandleFnI[In], name string, opts 
 	} else {
 		action = func(ctx fiber.Ctx) error {
 			var input In
-
 			setCtxIfNeeded(&input, ctx)
-
 			if err := ctx.Bind().JSON(&input); err != nil {
 				return ctx.Status(http.StatusUnprocessableEntity).JSON(NewResponseErrorBody(ctx, err))
 			}
@@ -445,8 +435,6 @@ func DeleteI[In any](apiResource, url string, fn HandleFnI[In], name string, opt
 	} else {
 		action = func(ctx fiber.Ctx) error {
 			if input := satisfyQuery[In](ctx); input != nil {
-				setCtxIfNeeded(input, ctx)
-
 				handleI(input, ctx, fn)
 			}
 
@@ -497,8 +485,6 @@ func DeleteIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], 
 	} else {
 		action = func(ctx fiber.Ctx) error {
 			if input := satisfyQuery[In](ctx); input != nil {
-				setCtxIfNeeded(input, ctx)
-
 				handleIO(input, ctx, fn)
 			}
 
