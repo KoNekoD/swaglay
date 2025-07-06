@@ -3,7 +3,7 @@ module tests
 go 1.24
 
 require (
-	github.com/KoNekoD/swaglay v0.0.2
+	github.com/KoNekoD/swaglay v0.0.5
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/gofiber/fiber/v3 v3.0.0-beta.4

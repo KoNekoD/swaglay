@@ -56,7 +56,7 @@ func (f *fieldError) Type() reflect.Type {
 	return reflect.TypeOf("")
 }
 
-func (f *fieldError) Translate(ut ut.Translator) string {
+func (f *fieldError) Translate(_ ut.Translator) string {
 	return "123 translated"
 }
 
@@ -316,6 +316,21 @@ func TestHttp(t *testing.T) {
 			sendRequest(fiberApp, fiber.MethodDelete, addLeadingSlash(deleteIUrl+getDataInQueryString()))
 			sendRequest(fiberApp, fiber.MethodDelete, addLeadingSlash(deleteOUrl+getDataInQueryString()))
 			sendRequest(fiberApp, fiber.MethodDelete, addLeadingSlash(deleteIOUrl+getDataInQueryString()))
+		},
+	)
+
+	t.Run(
+		"test multiple params use",
+		func(t *testing.T) {
+			swaglay.SetupApi(api)
+			fiberApp := getFiberApp()
+			swaglay_fiber.Fiber = fiberApp
+			swaglay_fiber.FiberApp = fiberApp
+
+			getUrl := getApiUrl() + "{param1}/{param2}"
+			swaglay_fiber.Get(api, getUrl, fn, getName())
+
+			sendRequest(fiberApp, fiber.MethodGet, addLeadingSlash(getUrl+getDataInQueryString()))
 		},
 	)
 
