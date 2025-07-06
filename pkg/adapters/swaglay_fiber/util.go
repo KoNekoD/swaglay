@@ -6,7 +6,7 @@ import (
 )
 
 func replacePath(path string) string {
-	return regexp.MustCompile(`\{(\S+)\}`).ReplaceAllString(path, ":$1")
+	return regexp.MustCompile(`\{([^}]+)\}`).ReplaceAllString(path, ":$1")
 }
 
 func fullPath(path string) string {
