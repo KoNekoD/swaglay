@@ -16,7 +16,7 @@ var NewResponseErrorBody = func(ctx fiber.Ctx, err error) any {
 
 var NewResponseError = func(ctx fiber.Ctx, err error) (int, any) {
 	status := http.StatusInternalServerError
-	validationErrors := validator.ValidationErrors{}
+	var validationErrors validator.ValidationErrors
 	if errors.As(err, &validationErrors) {
 		status = http.StatusUnprocessableEntity
 	}
