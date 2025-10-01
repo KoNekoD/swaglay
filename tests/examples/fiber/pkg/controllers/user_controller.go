@@ -6,6 +6,7 @@ import (
 	"fiber/pkg/services"
 	. "github.com/KoNekoD/swaglay/pkg/adapters/swaglay_fiber"
 	"github.com/gofiber/fiber/v3"
+	"strconv"
 )
 
 type UserController struct {
@@ -29,6 +30,7 @@ func (c *UserController) Init(r *fiber.App) {
 	GetO(api, "/me", c.Me, "Me")
 	PostI(api, "/change-email", c.ChangeEmail, "Change email")
 	Delete(api, "/delete-account", c.DeleteAccount, "Delete account")
+	Delete(api, "/{id}", c.DeleteAccount, "Delete account")
 }
 
 func (c *UserController) Me(ctx fiber.Ctx) (*dtos.UserDto, error) {
@@ -44,7 +46,8 @@ func (c *UserController) ChangeEmail(i *dtos.ChangeEmail, ctx fiber.Ctx) error {
 }
 
 func (c *UserController) DeleteAccount(ctx fiber.Ctx) error {
-	userId := 123
+	userIdStr := ctx.Params("id")
+	userId, _ := strconv.Atoi(userIdStr)
 
 	return c.userManager.DeleteAccount(userId)
 }

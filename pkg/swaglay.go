@@ -89,10 +89,9 @@ func registerHandler(resourceName, url, method, name string, in any, out any) {
 	// extract slice of {...} from url
 	replacements := extractReplacements(url)
 	for _, replacement := range replacements {
-		operation.HasQueryParameter(
-			replacement, rest.QueryParam{
+		operation.HasPathParameter(
+			replacement, rest.PathParam{
 				Description: "This is a replacement for " + replacement,
-				Required:    true,
 				Type:        rest.PrimitiveTypeString,
 			},
 		)
