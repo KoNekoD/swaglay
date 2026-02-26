@@ -24,4 +24,4 @@ var NewResponseError = func(ctx fiber.Ctx, err error) (int, any) {
 	return status, NewResponseErrorBody(ctx, err)
 }
 
-var OnHandleError = func(err error) {}
+var OnHandleError = func(ctx fiber.Ctx, err error) {}

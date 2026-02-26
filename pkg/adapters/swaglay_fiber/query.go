@@ -27,7 +27,7 @@ func satisfyQuery[DtoType any](ctx fiber.Ctx) *DtoType {
 	if err != nil {
 		err = ctx.Status(http.StatusBadRequest).JSON(NewResponseErrorBody(ctx, err))
 		if err != nil {
-			OnHandleError(err)
+			OnHandleError(ctx, err)
 		}
 
 		return nil
@@ -40,7 +40,7 @@ func satisfyQuery[DtoType any](ctx fiber.Ctx) *DtoType {
 	if err = FiberApp.Config().StructValidator.Validate(&dto); err != nil {
 		err = ctx.Status(http.StatusUnprocessableEntity).JSON(NewResponseErrorBody(ctx, err))
 		if err != nil {
-			OnHandleError(err)
+			OnHandleError(ctx, err)
 		}
 
 		return nil
