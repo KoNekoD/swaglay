@@ -115,7 +115,7 @@ func GetI[In any](apiResource, url string, fn HandleFnI[In], name string, opts .
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapSatisfyQueryInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input := ctx.Locals("input").(*In); input != nil {
+			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
 				handleI(input, ctx, fn)
 			}
 
@@ -167,7 +167,7 @@ func GetIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], nam
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapSatisfyQueryInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input := ctx.Locals("input").(*In); input != nil {
+			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
 				handleIO(input, ctx, fn)
 			}
 
@@ -218,7 +218,7 @@ func PostI[In any](apiResource, url string, fn HandleFnI[In], name string, opts 
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapBodyInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input := ctx.Locals("input").(*In); input != nil {
+			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
 				handleI(input, ctx, fn)
 			}
 
@@ -273,7 +273,7 @@ func PostIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], na
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapBodyInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input := ctx.Locals("input").(*In); input != nil {
+			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
 				handleIO(input, ctx, fn)
 			}
 			return nil
@@ -325,7 +325,7 @@ func PutI[In any](apiResource, url string, fn HandleFnI[In], name string, opts .
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapBodyInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input := ctx.Locals("input").(*In); input != nil {
+			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
 				handleI(input, ctx, fn)
 			}
 			return nil
@@ -377,7 +377,7 @@ func PutIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], nam
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapBodyInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input := ctx.Locals("input").(*In); input != nil {
+			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
 				handleIO(input, ctx, fn)
 			}
 			return nil
@@ -429,7 +429,7 @@ func DeleteI[In any](apiResource, url string, fn HandleFnI[In], name string, opt
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapSatisfyQueryInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input := ctx.Locals("input").(*In); input != nil {
+			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
 				handleI(input, ctx, fn)
 			}
 			return nil
@@ -479,7 +479,7 @@ func DeleteIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], 
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapSatisfyQueryInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input := ctx.Locals("input").(*In); input != nil {
+			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
 				handleIO(input, ctx, fn)
 			}
 			return nil
