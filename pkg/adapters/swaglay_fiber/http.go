@@ -59,17 +59,19 @@ func assertUnsupportedUseWithInput(opts []Opts) {
 	}
 }
 
-func getMiddlewares(opts []Opts) []fiber.Handler {
+func getMiddlewares(opts []Opts) []any {
 	if len(opts) == 0 {
 		return nil
 	}
 
-	var middlewares []fiber.Handler
+	var middlewares []any
 
 	if opts[0].Use != nil {
 		middlewares = append(middlewares, opts[0].Use)
 	}
-	middlewares = append(middlewares, opts[0].Uses...)
+	for _, use := range opts[0].Uses {
+		middlewares = append(middlewares, use)
+	}
 
 	return middlewares
 }

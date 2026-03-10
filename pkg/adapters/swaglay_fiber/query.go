@@ -10,8 +10,8 @@ import (
 
 func satisfyQuery[DtoType any](ctx fiber.Ctx) *DtoType {
 	values := make(url.Values, ctx.RequestCtx().QueryArgs().Len())
-	ctx.RequestCtx().QueryArgs().VisitAll(
-		func(key, value []byte) {
+	ctx.RequestCtx().QueryArgs().All()(
+		func(key, value []byte) bool {
 			keyString := utils.UnsafeString(key)
 			valueString := utils.UnsafeString(value)
 
@@ -20,6 +20,8 @@ func satisfyQuery[DtoType any](ctx fiber.Ctx) *DtoType {
 			} else {
 				values[keyString] = []string{valueString}
 			}
+
+			return true
 		},
 	)
 
