@@ -98,7 +98,11 @@ func Get(apiResource, url string, fn HandleFn, name string, opts ...Opts) {
 		return nil
 	}
 
-	Fiber.Get(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Get(replacePath(url), handlers[0], handlers[1:])
 }
 
 func GetI[In any](apiResource, url string, fn HandleFnI[In], name string, opts ...Opts) {
@@ -115,7 +119,7 @@ func GetI[In any](apiResource, url string, fn HandleFnI[In], name string, opts .
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapSatisfyQueryInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
+			if input := ctx.Locals("input").(*In); input != nil {
 				handleI(input, ctx, fn)
 			}
 
@@ -131,7 +135,11 @@ func GetI[In any](apiResource, url string, fn HandleFnI[In], name string, opts .
 		}
 	}
 
-	Fiber.Get(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Get(replacePath(url), handlers[0], handlers[1:])
 }
 
 func GetO[Out any](apiResource, url string, fn HandleFnO[Out], name string, opts ...Opts) {
@@ -150,7 +158,11 @@ func GetO[Out any](apiResource, url string, fn HandleFnO[Out], name string, opts
 		return nil
 	}
 
-	Fiber.Get(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Get(replacePath(url), handlers[0], handlers[1:])
 }
 
 func GetIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], name string, opts ...Opts) {
@@ -167,7 +179,7 @@ func GetIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], nam
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapSatisfyQueryInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
+			if input := ctx.Locals("input").(*In); input != nil {
 				handleIO(input, ctx, fn)
 			}
 
@@ -182,7 +194,11 @@ func GetIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], nam
 		}
 	}
 
-	Fiber.Get(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Get(replacePath(url), handlers[0], handlers[1:])
 }
 
 func Post(apiResource, url string, fn HandleFn, name string, opts ...Opts) {
@@ -201,7 +217,11 @@ func Post(apiResource, url string, fn HandleFn, name string, opts ...Opts) {
 		return nil
 	}
 
-	Fiber.Post(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Post(replacePath(url), handlers[0], handlers[1:])
 }
 
 func PostI[In any](apiResource, url string, fn HandleFnI[In], name string, opts ...Opts) {
@@ -218,7 +238,7 @@ func PostI[In any](apiResource, url string, fn HandleFnI[In], name string, opts 
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapBodyInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
+			if input := ctx.Locals("input").(*In); input != nil {
 				handleI(input, ctx, fn)
 			}
 
@@ -238,7 +258,11 @@ func PostI[In any](apiResource, url string, fn HandleFnI[In], name string, opts 
 		}
 	}
 
-	Fiber.Post(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Post(replacePath(url), handlers[0], handlers[1:])
 }
 
 func PostO[Out any](apiResource, url string, fn HandleFnO[Out], name string, opts ...Opts) {
@@ -256,7 +280,11 @@ func PostO[Out any](apiResource, url string, fn HandleFnO[Out], name string, opt
 		return nil
 	}
 
-	Fiber.Post(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Post(replacePath(url), handlers[0], handlers[1:])
 }
 
 func PostIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], name string, opts ...Opts) {
@@ -273,7 +301,7 @@ func PostIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], na
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapBodyInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
+			if input := ctx.Locals("input").(*In); input != nil {
 				handleIO(input, ctx, fn)
 			}
 			return nil
@@ -290,7 +318,11 @@ func PostIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], na
 		}
 	}
 
-	Fiber.Post(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Post(replacePath(url), handlers[0], handlers[1:])
 }
 
 func Put(apiResource, url string, fn HandleFn, name string, opts ...Opts) {
@@ -308,7 +340,11 @@ func Put(apiResource, url string, fn HandleFn, name string, opts ...Opts) {
 		return nil
 	}
 
-	Fiber.Put(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Put(replacePath(url), handlers[0], handlers[1:])
 }
 
 func PutI[In any](apiResource, url string, fn HandleFnI[In], name string, opts ...Opts) {
@@ -325,7 +361,7 @@ func PutI[In any](apiResource, url string, fn HandleFnI[In], name string, opts .
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapBodyInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
+			if input := ctx.Locals("input").(*In); input != nil {
 				handleI(input, ctx, fn)
 			}
 			return nil
@@ -342,7 +378,11 @@ func PutI[In any](apiResource, url string, fn HandleFnI[In], name string, opts .
 		}
 	}
 
-	Fiber.Put(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Put(replacePath(url), handlers[0], handlers[1:])
 }
 
 func PutO[Out any](apiResource, url string, fn HandleFnO[Out], name string, opts ...Opts) {
@@ -360,7 +400,11 @@ func PutO[Out any](apiResource, url string, fn HandleFnO[Out], name string, opts
 		return nil
 	}
 
-	Fiber.Put(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Put(replacePath(url), handlers[0], handlers[1:])
 }
 
 func PutIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], name string, opts ...Opts) {
@@ -377,7 +421,7 @@ func PutIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], nam
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapBodyInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
+			if input := ctx.Locals("input").(*In); input != nil {
 				handleIO(input, ctx, fn)
 			}
 			return nil
@@ -394,7 +438,11 @@ func PutIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], nam
 		}
 	}
 
-	Fiber.Put(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Put(replacePath(url), handlers[0], handlers[1:])
 }
 
 func Delete(apiResource, url string, fn HandleFn, name string, opts ...Opts) {
@@ -412,7 +460,11 @@ func Delete(apiResource, url string, fn HandleFn, name string, opts ...Opts) {
 		return nil
 	}
 
-	Fiber.Delete(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Delete(replacePath(url), handlers[0], handlers[1:])
 }
 
 func DeleteI[In any](apiResource, url string, fn HandleFnI[In], name string, opts ...Opts) {
@@ -429,7 +481,7 @@ func DeleteI[In any](apiResource, url string, fn HandleFnI[In], name string, opt
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapSatisfyQueryInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
+			if input := ctx.Locals("input").(*In); input != nil {
 				handleI(input, ctx, fn)
 			}
 			return nil
@@ -444,7 +496,11 @@ func DeleteI[In any](apiResource, url string, fn HandleFnI[In], name string, opt
 		}
 	}
 
-	Fiber.Delete(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Delete(replacePath(url), handlers[0], handlers[1:])
 }
 
 func DeleteO[Out any](apiResource, url string, fn HandleFnO[Out], name string, opts ...Opts) {
@@ -462,7 +518,11 @@ func DeleteO[Out any](apiResource, url string, fn HandleFnO[Out], name string, o
 		return nil
 	}
 
-	Fiber.Delete(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Delete(replacePath(url), handlers[0], handlers[1:])
 }
 
 func DeleteIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], name string, opts ...Opts) {
@@ -479,7 +539,7 @@ func DeleteIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], 
 	if len(opts) > 0 && opts[0].UseWithInput {
 		opts = wrapSatisfyQueryInputMiddleware[In](opts)
 		action = func(ctx fiber.Ctx) error {
-			if input, ok := fiber.ValueFromContext[*In](ctx, "input"); ok {
+			if input := ctx.Locals("input").(*In); input != nil {
 				handleIO(input, ctx, fn)
 			}
 			return nil
@@ -494,5 +554,9 @@ func DeleteIO[In any, Out any](apiResource, url string, fn HandleFnIO[In, Out], 
 		}
 	}
 
-	Fiber.Delete(replacePath(url), action, getMiddlewares(opts)...)
+	handlers := make([]any, 0)
+	handlers = append(handlers, getMiddlewares(opts)...)
+	handlers = append(handlers, action)
+
+	Fiber.Delete(replacePath(url), handlers[0], handlers[1:])
 }
